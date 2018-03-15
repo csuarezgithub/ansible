@@ -1,0 +1,140 @@
+################################################################################
+# ==> Tasks for linux-wls Role for configure a Oracle Linux 7 system with
+# ==> requirements for Fusion Middleware infrastructrure installation.
+# ==> Supports version 12.2.1
+# ==> author: Christos Vezalis
+################################################################################
+
+
+- name: Add repository ClaroChile
+  command: rhnreg_ks --serverUrl=http://10.38.97.65/XMLRPC --activationkey=1-510df493c899849b3f4fd0b1202f5b7f --force 
+
+- name: Instalar binutils 
+  command: yum install binutils --nogpgcheck -y 
+
+- name: Instalar compat-libcap1
+  command: yum install compat-libcap1 --nogpgcheck -y  
+
+- name: Instalar compat-libstdc++-33.x86_64 
+  command: yum install compat-libstdc++-33.x86_64 --nogpgcheck -y
+
+- name: Instalar gcc.x86_64 
+  command: yum install gcc.x86_64 --nogpgcheck -y
+
+- name: Instalar gcc-c++.x86_64
+  command: yum install gcc-c++.x86_64 --nogpgcheck -y
+  
+- name: Instalar glibc.x86_64
+  command: yum install glibc.x86_64 --nogpgcheck -y 
+
+- name: Instalar glibc-devel.x86_64
+  command: yum install glibc-devel.x86_64 --nogpgcheck -y
+
+- name: Instalar libaio.x86_64
+  command: yum install libaio.x86_64 --nogpgcheck -y
+
+- name: Instalar libaio-devel.x86_64
+  command: yum install libaio-devel.x86_64 --nogpgcheck -y
+
+- name: Instalar libstdc++.x86_64
+  command: yum install libstdc++.x86_64 --nogpgcheck -y
+
+- name: Instalar libstdc++-devel.x86_64
+  command: yum install libstdc++-devel.x86_64 --nogpgcheck -y
+
+- name: Instalar ksh
+  command: yum install ksh --nogpgcheck -y
+
+- name: make
+  command: yum install make --nogpgcheck -y
+
+- name: Instalar sysstat
+  command: yum install sysstat --nogpgcheck -y
+
+#- name: Instalar Actualizaciones
+#  command: yum update --nogpgcheck -y
+
+- name: Instalar ntp
+  command: yum install ntp --nogpgcheck -y
+
+
+# ==> Configure Linux
+#- name: Install required libraries
+#  yum:
+#    name: "{{ item }}" 
+#    state : present  
+#  with_items: "{{ packages_list }}"
+
+# Configure resolv.conf
+- name: Configure resolv.conf
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    mode: 0644
+# Configure ntp.conf
+- name: Configure ntp.conf
+  template:
+    src: ntp.conf.j2
+    dest: /etc/ntp.conf
+    mode: 0644
+    
+ # Configure cloud.cfg
+- name: Configure cloud.cfg
+  template:
+    src: cloud.cfg.j2
+    dest: /etc/cloud/cloud.cfg
+    mode: 0644
+    
+- name: Disable SELinux
+  selinux: state=disabled
+- name: Disable Firewall Deamon (firewalld)
+  service: name=firewalld state=stopped enabled=no
+
+- name: reboot host
+  shell: ( sleep 3 && /sbin/reboot & )
+  async: 0
+  poll: 0
+
+- name: Wait for the server to rebootp
+  local_action: wait_for host="{{ansible_ssh_host}}" delay=15 state=started port="{{ansible_ssh_port}}" connect_timeout=10 timeout=180
+
+- name: Modificar Hostname
+  command: hostnamectl set-hostname claroprod225
+
+- name: Estado Hostanme
+  command: hostnamectl status
+
+
+  
+  
+#- name: Change kernel parameters
+#  sysctl: name="{{ item.key }}" value="{{ item.value }}" state=present
+#  with_dict: "{{ kernel_params }}"
+
+# ==> Create user and groups
+#- name: Create groups
+#  group: name={{ oracle_group }} state=present
+#- name: Create user
+#  user: name={{ oracle_user }} groups={{ oracle_group }} password={{ oracle_os_user_pass }}
+  
+# ==> Add open file and process limits for oracle user
+#- name: Create a shell profile with file and process limits for oracle user
+#  template: src=oracle-limits.sh dest=/etc/profile.d/
+
+# ==> Add limits for oracle user
+#- name: Add oracle user limits
+#  lineinfile: dest=/etc/security/limits.conf line='{{ oracle_user }} {{ item.limit }} {{ item.type}} {{ item.value }}'
+#  with_items:
+#    - { limit: 'soft', type: nofile, value: '{{ soft_no_file }}' }
+#    - { limit: 'hard', type: nofile, value: '{{ hard_no_file }}' }
+#    - { limit: 'soft', type: nproc, value: '{{ soft_nproc }}' }
+#    - { limit: 'hard', type: nproc, value: '{{ hard_nproc }}' }
+
+# ==> Create Base Directories
+#- name: Create Oracle Home directory
+#  file: state=directory path={{ middleware_home }} owner={{ oracle_user }} group={{ oracle_group }}
+#- name: Create Domain Home directory
+#  file: state=directory path={{ domains_home }} owner={{ oracle_user }} group={{ oracle_group }}
+#- name: Create Applications Home directory
+#  file: state=directory path={{ applications_home }} owner={{ oracle_user }} group={{ oracle_group }}
+

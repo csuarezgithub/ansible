@@ -1,0 +1,1 @@
+weblogic ansible_ssh_host=10.41.34.223 ansible_ssh_port=22

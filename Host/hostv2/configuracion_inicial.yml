@@ -1,0 +1,21 @@
+---
+- name: Configuracion Linux RedHat version 7.4
+  hosts: claroprod01
+  sudo: False
+  vars_files:
+    User defined variables for infrastructure
+    - infra-vars.yml
+    # Common properties. You may not delete this
+    #- wls-vars.yml
+    # Infrastructure passwords
+    #- secrets.yml
+  roles:
+    - role: linux-wls
+    #- role: linux-jdk
+    #- role: fmw-software
+    #  sudo_user: '{{ oracle_user }}'
+    #- role: fmw-domain
+    #  sudo_user: '{{ oracle_user }}'
+    #- role: node-manager
+    #- role: start-admin-server
+    #  sudo_user: '{{ oracle_user }}'

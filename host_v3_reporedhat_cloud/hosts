@@ -1,0 +1,23 @@
+[servers]
+#ANSIBLE001 ansible_ssh_host=10.41.34.223 ansible_ssh_port=22
+#STAGE ansible_ssh_host=10.41.34.47 ansible_ssh_port=22
+#ICPMASTER1 ansible_ssh_host=10.41.33.22 ansible_ssh_port=22
+#ICPMASTER2 ansible_ssh_host=10.41.34.109 ansible_ssh_port=22
+
+#ICPWN1 ansible_ssh_host=10.41.32.152 ansible_ssh_port=22
+#ICPWN2 ansible_ssh_host=10.41.34.146 ansible_ssh_port=22
+#ICPWN3 ansible_ssh_host=10.41.33.29 ansible_ssh_port=22
+
+#ICPPROXY 10.41.32.3
+#clarotest206
+clarotest206 ansible_ssh_host=10.41.32.204 ansible_ssh_port=22
+
+#template  weblogic ico 10.41.1.128
+#templateico ansible_ssh_host=10.41.1.128 ansible_ssh_port=22
+
+#[servers:vars]
+#ansible_hostname=prueba_ansible
+
+# ssh-copy-id root@10.41.32.204
+# ssh-copy-id root@10.41.34.109
+#Iniciar PlayBook  ansible-playbook -i hosts configure-server.yml

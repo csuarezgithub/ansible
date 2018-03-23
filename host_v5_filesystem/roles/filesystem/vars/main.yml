@@ -1,0 +1,16 @@
+pvs01: /dev/vdd
+volume_group01: vg02
+volumen_logico01: BO
+tamano_volume01: 30g
+#ruta02: /BO
+
+pvs02: /dev/vdd
+volume_group02: vg02
+volumen_logico02: data00
+tamano_volume02: 200g
+ruta02: /data00
+
+
+
+
+

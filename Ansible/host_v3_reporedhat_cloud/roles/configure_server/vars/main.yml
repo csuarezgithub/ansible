@@ -1,0 +1,7 @@
+packages_list:
+  - sysstat
+  - telnet
+  - binutils
+  - nmap
+  - ntp
+  - cloud-init

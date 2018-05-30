@@ -1,0 +1,10 @@
+---
+- name: Configure server
+  hosts: [servers]
+  sudo: false
+  vars_files:
+    #User defined variables for infrastructure
+    - infra-vars.yml
+
+  roles:
+    - role: configure_server

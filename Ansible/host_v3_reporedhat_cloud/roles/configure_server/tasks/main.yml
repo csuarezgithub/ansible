@@ -1,0 +1,119 @@
+################################################################################
+# ==> Tasks for configure Linux RedHat 7.4 ClaroChile
+# ==> requirements for infrastructrure installation.
+# ==> Supports version 12.2.1
+# ==> author: Cristian Suarez
+################################################################################
+
+
+#- name: Añadir proxy para ocupar repositorio redhatRedHat
+#  command: subscription-manager config --server.proxy_hostname=10.38.97.65 --server.proxy_port=8118 
+#- name: Añadir repositorio redhatRedHat
+#  command: subscription-manager register --username csuarezcorp --password Nimda.sop4 --auto-attach --force
+
+# ==> Configure proxy con repositorio Local Claro
+- name: Add Some repo
+  yum_repository:
+    name: local-repo-rhel7
+    description: Some YUM repo
+    baseurl: http://10.41.36.252/repo/rhel-7-server-rpms/
+    gpgkey: http://server.com/keys/somerepo.pub
+    gpgcheck: no
+    enabled: yes
+
+# ==> Configure proxy con repositorio cs
+#- name: Añadir proxy para ocupar repositorio redhatRedHat
+#  command: subscription-manager config --server.proxy_hostname=10.38.97.65 --server.proxy_port=8118 
+#- name: Añadir repositorio redhatRedHat
+#  command: subscription-manager register --username csuarezcorp --password Nimda.sop4 --auto-attach --force 
+#- name: Suscripcion pool
+#  command: subscription-manager attach --pool=8a85f98c61b28d040161b3c130d11f85
+
+
+# ==> Configure Linux
+- name: Install required libraries
+  yum: name={{ item }} state=present
+  with_items: "{{ packages_list }}"
+- name: Disable SELinux
+  selinux: state=disabled
+- name: Disable Firewall Deamon (firewalld)
+  service: name=firewalld state=stopped enabled=no
+
+- name: Verificar si el archivo existe cloud.cfg
+  stat: path=/etc/cloud/cloud.cfg
+  register: stat_result
+
+- name: renombar cloud.cfg
+  command: mv /etc/cloud/cloud.cfg /etc/cloud/cloud.cfg.old
+  when: stat_result.stat.exists == True
+- name: reboot host
+  shell: ( sleep 3 && /sbin/reboot & )
+  async: 0
+  poll: 0
+
+- name: Wait for the server to rebootp
+  local_action: wait_for host="{{ansible_ssh_host}}" delay=15 state=started port="{{ansible_ssh_port}}" connect_timeout=10 timeout=180
+
+
+- name: main | changing hostname to match inventory_hostname_short
+  hostname:
+    name: "{{ inventory_hostname_short }}"
+  register: "hostname_status"
+  become: true
+  when: ansible_hostname != inventory_hostname_short
+
+- name: main | restarting machine
+  shell: /sbin/shutdown -r now "rebooting to complete hostname change"
+  async: 1
+  poll: 0
+  ignore_errors: true
+  become: true
+  when: >
+        (change_hostname_reboot is defined and
+        change_hostname_reboot ) and
+        hostname_status.changed
+
+- name: main | waiting for server to come back
+  wait_for:
+    host: "{{ ansible_host | default(inventory_hostname) }}"
+    port: 22
+    search_regex: OpenSSH
+    delay: 10
+  vars:
+    ansible_connection: local
+  become: false
+  when: >
+        (change_hostname_reboot is defined and
+        change_hostname_reboot ) and
+        hostname_status.changed
+
+- name: Modificar permiso hostname
+  command: chattr +i /etc/hostname
+
+- name: add lines network eth0
+  lineinfile: 
+   dest: /etc/sysconfig/network-scripts/ifcfg-eth0
+   line: '{{ item }}'
+  with_items:
+    - 'PEERDNS=no'
+    - 'DOMAIN=clarochile.org'
+    - 'NM_CONTROLLED=yes'
+    - 'DNS1=10.38.4.171'
+    - 'DNS2=10.38.4.172'
+
+
+- name: Configure resolv.conf
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    mode: 0644
+
+
+- name: Modificar permiso reslv.conf
+  command: chattr +i /etc/resolv.conf
+# Configure ntp.conf
+- name: Configure ntp.conf
+  template:
+    src: ntp.conf.j2
+    dest: /etc/ntp.conf
+    mode: 0644

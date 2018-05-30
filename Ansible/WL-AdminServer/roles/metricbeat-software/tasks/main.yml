@@ -1,0 +1,9 @@
+- name: Copy rpm file to server
+  copy:
+     src: metricbeat-6.2.4-x86_64.rpm
+     dest: /home/wlsp/metricbeat-6.2.4-x86_64.rpm
+
+- name: Install package.
+  yum:
+     name: /home/wlsp/metricbeat-6.2.4-x86_64.rpm
+     state: present

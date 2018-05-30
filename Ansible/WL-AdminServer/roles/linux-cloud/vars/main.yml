@@ -1,0 +1,12 @@
+packages_list:
+  - sysstat
+  - telnet
+  - binutils
+  - nmap
+  - ntp
+  - cloud-init
+
+# JDK installer and target folder
+vmtools_installation_archive: 'vmtools-2.3.0.130.tar.bz2' # Revisar si es posible instalar desde rpm
+vmtools_folder: '/root/vmtools' # Revisar si es posible instalar desde rpm
+#'/u01/wlsp/fmw12c/jdk1.8.0_161'

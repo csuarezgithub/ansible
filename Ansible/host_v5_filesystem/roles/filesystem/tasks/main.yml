@@ -1,0 +1,27 @@
+################################################################################
+# ==> Tasks for configure Linux RedHat 7.4 ClaroChile
+# ==> requirements for infrastructrure installation.
+# ==> Supports version 12.2.1
+# ==> author: Cristian Suarez
+################################################################################
+- lvg:
+    vg: '{{volume_group02}}'
+    pvs: '{{ pvs02 }}'
+    pesize: 32
+
+
+- lvol:
+    vg: '{{ volume_group02 }}'
+    lv: '{{ volumen_logico02}}'
+    size: '{{ tamano_volume02 }}'
+
+- filesystem:
+    fstype: ext4
+    dev: '/dev/{{ volume_group02 }}/{{ volumen_logico02 }}'
+
+- name: Mount up device by label
+  mount:
+    path: '{{ ruta02 }}'
+    src: '/dev/{{ volume_group02 }}/{{ volumen_logico02 }}'
+    fstype: ext4
+    state: mounted

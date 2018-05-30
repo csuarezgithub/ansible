@@ -1,0 +1,25 @@
+#weblogic ansible_ssh_host=192.168.122.115 ansible_ssh_port=22
+[weblogic]
+#QA/TEST
+clarotest265 ansible_ssh_host=10.41.34.97 ansible_ssh_port=22
+clarotest260 ansible_ssh_host=10.41.32.184 ansible_ssh_port=22
+clarotest256 ansible_ssh_host=10.41.32.241 ansible_ssh_port=22
+#DESA
+
+#PROD
+
+
+#ansible_user=cristian
+
+# ssh-copy-id root@192.168.122.95
+# ssh-copy-id root@10.41.34.109
+#Iniciar PlayBook  ansible-playbook -i hosts weblogic-fmw-domain.yml -vvv
+
+#servicio gui minimo
+#yum groupinstall 'Server with GUI'
+#en caso de error por user ejecutar comando
+#chown -R wlsp:fmw12c /u01
+#vertical line select alt + shif
+
+#### scp
+#scp root@192.168.122.61:/etc/cloud/cloud.cfg /home/cristian/

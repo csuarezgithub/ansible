@@ -1,0 +1,29 @@
+---
+- name: Configure Oracle Linux 7.1 with WebLogic 12.2.1.3.0
+  hosts: weblogic
+  sudo: False
+  vars_files:
+    # User defined variables for infrastructure
+    - infra-vars.yml
+    # Common properties. You may not delete this
+    - wls-vars.yml
+    # Infrastructure passwords
+    - secrets.yml
+  roles:
+    - role: linux-cloud
+    #- role: linux-wls
+    #- role: linux-jdk
+    #- role: fmw-software
+    #- role: metricbeat-software
+    #  sudo_user: '{{ oracle_user }}'
+    
+    
+    
+    #otros roles
+    #- role: fmw-domain
+    #  sudo_user: '{{ oracle_user }}'
+    #- role: node-manager
+    #- role: start-admin-server
+    #  sudo_user: '{{ oracle_user }}'
+    #- role: fmw-managed-server
+    #  sudo_user: '{{ oracle_user }}'

@@ -1,0 +1,31 @@
+---
+
+- import_tasks: vars.yml
+  tags:
+    - system
+    - cron
+    - vars
+    - cron-vars
+
+- import_tasks: bashfile.yml
+
+- import_tasks: install.yml
+  tags:
+    - system
+    - cron
+    - install
+    - cron-install
+
+- import_tasks: config.yml
+  tags:
+    - system
+    - cron
+    - config
+    - cron-config
+
+- import_tasks: service.yml
+  tags:
+    - system
+    - cron
+    - service
+    - cron-service

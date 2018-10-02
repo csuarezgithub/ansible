@@ -1,0 +1,10 @@
+---
+
+- hosts: webservers
+  roles:
+    - franklinkim.cron
+  vars:
+    cron_tasks:
+      - name: checking dirs 5
+        minute: "*/30"
+        job: "sh /home/appmgr/getStateRedHat.sh"

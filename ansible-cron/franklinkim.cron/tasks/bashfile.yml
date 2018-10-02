@@ -1,0 +1,6 @@
+- name: Copy file sh
+  template:
+    src: getStateRedHat.sh.j2
+    dest: /home/appmgr/getStateRedHat.sh
+    #mode: 0644
+    mode: a+x

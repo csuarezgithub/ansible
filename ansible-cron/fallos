@@ -1,0 +1,29 @@
++ sshpass -p C10YTyR10n ssh-copy-id -o StrictHostKeyChecking=no appmgr@10.41.1.103
+sshpass -p C10YTyR10n ssh-copy-id -o StrictHostKeyChecking=no appmgr@10.41.1.119
++ sshpass -p C10YTyR10n ssh-copy-id -o StrictHostKeyChecking=no appmgr@10.38.96.24
+IBM Guardium, Command Line Interface (CLI)
+Permission denied, please try again.
++ sshpass -p C10YTyR10n ssh-copy-id -o StrictHostKeyChecking=no appmgr@10.38.96.25
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/cristian/.ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+
+IBM Guardium, Command Line Interface (CLI)
+
+Permission denied, please try again.
+
++ sshpass -p C10YTyR10n ssh-copy-id -o StrictHostKeyChecking=no appmgr@10.38.96.37
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/cristian/.ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+Permission denied, please try again.
++ sshpass -p C10YTyR10n ssh-copy-id -o StrictHostKeyChecking=no appmgr@10.38.96.56
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/cristian/.ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+
+IBM Guardium, Command Line Interface (CLI)
+
+Permission denied, please try again.
+
+sshpass -p C10YTyR10n ssh-copy-id -o StrictHostKeyChecking=no appmgr@10.38.6.150
